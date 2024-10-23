@@ -7,18 +7,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BlankFragment.ButtonInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(supportFragmentManager.findFragmentById(R.id.diceContainer) !is DieFragment) {
-            val dieFragment = DieFragment.newInstance(20)
+        val dieFragment = DieFragment.newInstance(100)
+
+        if(savedInstanceState == null) {
             supportFragmentManager.beginTransaction().add(R.id.diceContainer, dieFragment).commit()
         }
 
-        findViewById<Button>(R.id.rollDiceButton).setOnClickListener{
-            (supportFragmentManager.findFragmentById(R.id.diceContainer) as DieFragment).throwDie()
-        }
+    }
+
+    override fun buttonClicked() {
+        (supportFragmentManager.findFragmentById(R.id.diceContainer) as DieFragment).throwDie()
     }
 }
